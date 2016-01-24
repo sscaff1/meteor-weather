@@ -1,0 +1,49 @@
+<head>
+  <title>Surf Weather Report</title>
+</head>
+
+<body>
+  {{> queryPlace}}
+</body>
+
+<template name="queryPlace">
+  <h2>Type a city or zip code to get weather report</h2>
+  <div class='row'>
+    <div class="col-sm-6">
+      <form>
+        <div class="form-group">
+          <input class="form-control" type="text" placeholder="City, State or Zip Code will work" name="place" />
+        </div>
+        <div class="form-group">
+          <button class="btn btn-primary" type="submit">Get Weather Report</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  {{#if response}}
+    {{> responseTemplate data=response}}
+  {{/if}}
+</template>
+
+<template name="responseTemplate">
+  <div class="row">
+    <div class="col-sm-3">
+      <img src="{{data.current_condition.[0].weatherIconUrl.[0].value}}" />
+    </div>
+    <div class="col-sm-3">
+      Feels Like: {{data.current_condition.[0].FeelsLikeF}}<br/>
+      Actually: {{data.current_condition.[0].temp_F}}<br/>
+      Description: {{data.current_condition.[0].weatherDesc.[0].value}}
+    </div>
+    <div class="col-sm-3">
+      Wind Speed: {{data.current_condition.[0].windspeedMiles}} (mph)<br/>
+      Wind Direction: {{data.current_condition.[0].winddir16Point}}<br/>
+      Humidity: {{data.current_condition.[0].humidity}}
+    </div>
+    <div class="col-sm-3">
+      Tomorrow High: {{data.weather.[1].maxtempF}} (F)<br/>
+      Tomorrow Low: {{data.weather.[1].mintempF}} (F)<br/>
+      Last Reported: {{lastUpdate data.current_condition.[0].observation_time}}
+    </div>
+  </div>
+</template>
